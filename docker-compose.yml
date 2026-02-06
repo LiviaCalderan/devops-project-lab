@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  web:
+    build:
+      context: ./app
+    ports:
+      - "80:80"
+    
+    networks:
+      - webnet
+
+networks:
+  webnet:
+    name: webnet
+    external: true
+    driver: bridge
