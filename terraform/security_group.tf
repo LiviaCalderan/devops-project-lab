@@ -1,6 +1,7 @@
 resource "aws_security_group" "this" {
     name        = "website-sg"
     description = "Website security group allowing HTTP and HTTPS traffic"
+    vpc_id      = aws_vpc.this.id
 
     tags = {
         IAC = "true"

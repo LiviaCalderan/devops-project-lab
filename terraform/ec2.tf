@@ -1,6 +1,7 @@
 resource "aws_instance" "this" {
   ami           = data.aws_ami.this.id
   instance_type = "t3.micro"
+  subnet_id     = aws_subnet.public.id
 
   associate_public_ip_address = true
 
@@ -10,5 +11,9 @@ resource "aws_instance" "this" {
   tags = {
     Name = "website-server"
     IAC = "true"
+  }
+
+  depends_on = {
+    [aws_internet_gateway.this]
   }
 }
