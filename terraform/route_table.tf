@@ -6,10 +6,12 @@ resource "aws_route_table" "this" {
     gateway_id = aws_internet_gateway.this.id
   }
 
-  tags = {
-    Name = "website-route-table"
-    IAC  = "true"
-  }
+  tags = merge(
+    var.tags,
+    {
+      Name = "${var.project_name}-rt"
+    }
+  )
 }
 
 resource "aws_route_table_association" "this" {

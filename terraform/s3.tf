@@ -5,9 +5,7 @@ resource "aws_s3_bucket" "terraform_state" {
     prevent_destroy = true
   }
 
-  tags = {
-    IAC = "true"
-  }
+  tags = var.tags
 }
 
 resource "aws_s3_bucket_versioning" "terraform_state_versioning" {

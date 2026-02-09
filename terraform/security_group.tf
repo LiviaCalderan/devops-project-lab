@@ -3,9 +3,12 @@ resource "aws_security_group" "this" {
   description = "Website security group allowing HTTP and HTTPS traffic"
   vpc_id      = aws_vpc.this.id
 
-  tags = {
-    IAC = "true"
-  }
+  tags = merge(
+    var.tags,
+    {
+      Name = "${var.project_name}-sg"
+    }
+  )
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_https" {
