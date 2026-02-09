@@ -8,7 +8,7 @@ resource "aws_route_table" "this" {
 
   tags = {
     Name = "website-route-table"
-    IAC = "true"
+    IAC  = "true"
   }
 }
 

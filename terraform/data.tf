@@ -1,5 +1,5 @@
 data "aws_ami" "this" {
-    most_recent = true
+  most_recent = true
 
   filter {
     name   = "name"

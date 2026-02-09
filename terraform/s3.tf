@@ -6,7 +6,7 @@ resource "aws_s3_bucket" "terraform_state" {
   }
 
   tags = {
-    IAC        = "true"
+    IAC = "true"
   }
 }
 
@@ -18,5 +18,5 @@ resource "aws_s3_bucket_versioning" "terraform_state_versioning" {
   }
 
   depends_on = [aws_s3_bucket.terraform_state]
-  
+
 }

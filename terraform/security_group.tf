@@ -1,11 +1,11 @@
 resource "aws_security_group" "this" {
-    name        = "website-sg"
-    description = "Website security group allowing HTTP and HTTPS traffic"
-    vpc_id      = aws_vpc.this.id
+  name        = "website-sg"
+  description = "Website security group allowing HTTP and HTTPS traffic"
+  vpc_id      = aws_vpc.this.id
 
-    tags = {
-        IAC = "true"
-    }
+  tags = {
+    IAC = "true"
+  }
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_https" {
@@ -13,7 +13,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_https" {
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 443
   to_port           = 443
-  ip_protocol       = "tcp" 
+  ip_protocol       = "tcp"
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_http" {
@@ -21,7 +21,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_http" {
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 80
   to_port           = 80
-  ip_protocol       = "tcp" 
+  ip_protocol       = "tcp"
 }
 
 resource "aws_vpc_security_group_egress_rule" "allow_all_traffic" {
@@ -29,6 +29,6 @@ resource "aws_vpc_security_group_egress_rule" "allow_all_traffic" {
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 0
   to_port           = 0
-  ip_protocol       = "-1" 
+  ip_protocol       = "-1"
 }
 

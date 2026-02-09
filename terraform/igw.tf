@@ -3,7 +3,7 @@ resource "aws_internet_gateway" "this" {
 
   tags = {
     Name = "website-igw"
-    IAC = "true"
+    IAC  = "true"
   }
 
 }
