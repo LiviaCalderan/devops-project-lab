@@ -1,5 +1,5 @@
 resource "aws_instance" "this" {
-  ami           = "ami-03ea746da1a2e36e7"
+  ami           = data.aws_ami.this.id
   instance_type = "t3.micro"
   associate_public_ip_address = true
 
@@ -8,4 +8,3 @@ resource "aws_instance" "this" {
     IAC = "true"
   }
 }
-
