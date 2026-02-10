@@ -51,6 +51,7 @@ jobs:
         run:  |
           INSTANCE_ID=$(aws ec2 describe-instances \
             --filters "Name=tag:Name,Values=${{ vars.TF_VAR_PROJECT_NAME }}-instance-ec2" \
+                      "Name=instance-state-name,Values=running" \
             --query "Reservations[0].Instances[*].InstanceId" \
             --output text)
 
