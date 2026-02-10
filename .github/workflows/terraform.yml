@@ -7,7 +7,25 @@ on:
       apply:
         description: 'Executar Terraform Apply?'
         required: true
-        default: 'false'
+        default: 'FALSE'
+        type: choice
+        options:
+          - 'TRUE'
+          - 'FALSE'
+
+      destroy:
+        description: 'Executar Terraform Destroy?'
+        required: true
+        default: 'FALSE'
+        type: choice
+        options:
+          - 'TRUE'
+          - 'FALSE'
+
+      plan_destroy:
+        description: 'Planejar o Terraform Destroy?'
+        required: true
+        default: 'FALSE'
         type: choice
         options:
           - 'TRUE'
@@ -44,7 +62,7 @@ jobs:
 
       - name: Terraform Plan
         working-directory: ./terraform
-        run: terraform plan -out=tfplan -input=false
+        run: terraform plan -out=tfplan.tfout -input=false
         env:
           TF_VAR_aws_region: ${{ vars.TF_VAR_aws_region }}
           TF_VAR_project_name: ${{ vars.TF_VAR_project_name }}
@@ -54,5 +72,16 @@ jobs:
 
       - name: Terraform Apply
         working-directory: ./terraform
-        run: terraform apply -auto-approve -input=false tfplan
+        run: terraform apply -auto-approve -input=false tfplan.tfout
         if: ${{github.event.inputs.apply == 'TRUE'}}
+
+      - name: Plan Destroy
+        working-directory: ./terraform
+        run: terraform plan -destroy -input=false -out=tfplan.tfout
+        if: ${{github.event.inputs.plan_destroy == 'TRUE'}}
+
+
+      - name: Terraform Destroy
+        working-directory: ./terraform
+        run: terraform apply -destroy -auto-approve -input=false tfplan.tfout
+        if: ${{github.event.inputs.destroy == 'TRUE'}}
