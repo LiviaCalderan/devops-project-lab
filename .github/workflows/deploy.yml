@@ -31,6 +31,6 @@ jobs:
 
       - name: Build, Tag and Push Image
         run: |
-          docker build -t ${{ vars.TF_VAR_ecr_repository_name }}:latest .
+          docker build -t ${{ vars.TF_VAR_ecr_repository_name }}:latest -f app/Dockerfile .
           docker tag ${{ vars.TF_VAR_ecr_repository_name }}:latest 887675945755.dkr.ecr.us-east-2.amazonaws.com/${{ vars.TF_VAR_ecr_repository_name }}:latest
           docker push 887675945755.dkr.ecr.us-east-2.amazonaws.com/${{ vars.TF_VAR_ecr_repository_name }}:latest
