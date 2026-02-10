@@ -37,6 +37,7 @@ jobs:
 
   deploy:
     name: deploy_ec2
+    needs: build
     runs-on: ubuntu-latest
     steps:
 
