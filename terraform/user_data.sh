@@ -1,5 +1,6 @@
 sudo su
 yum update -y
 yum install -y docker
-service docker start
-usermod -a -G docker ec2-user
+systemctl start docker
+systemctl enable docker
+usermod -aG docker ec2-user

@@ -8,7 +8,7 @@ resource "aws_instance" "this" {
   iam_instance_profile   = aws_iam_instance_profile.ec2_ssm_profile.name
   vpc_security_group_ids = [aws_security_group.this.id]
 
-  user_data = file("user_data.sh")
+  user_data = file("${path.module}/user_data.sh")
 
   tags = merge( 
     var.tags,
