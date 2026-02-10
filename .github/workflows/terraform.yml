@@ -79,6 +79,12 @@ jobs:
         working-directory: ./terraform
         run: terraform plan -destroy -input=false -out=tfplan.tfout
         if: ${{github.event.inputs.plan_destroy == 'TRUE'}}
+        env:
+          TF_VAR_aws_region: ${{ vars.TF_VAR_aws_region }}
+          TF_VAR_project_name: ${{ vars.TF_VAR_project_name }}
+          TF_VAR_instance_type: ${{ vars.TF_VAR_instance_type }}
+          TF_VAR_ecr_repository_name: ${{ vars.TF_VAR_ecr_repository_name }}
+          TF_VAR_state_bucket: ${{ vars.TF_VAR_state_bucket }}
 
 
       - name: Terraform Destroy
