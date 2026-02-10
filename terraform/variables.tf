@@ -16,6 +16,11 @@ variable "project_name" {
 variable "tags" {
   type        = map(string)
   description = "Tags for resources"
+
+  default = {
+    Project   = "devops-project-lab"
+    ManagedBy = "terraform"
+  }
 }
 
 variable "instance_type" {
