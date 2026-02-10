@@ -40,6 +40,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v6.0.0
+        with:
+          aws-region: us-east-2
+          role-to-assume: arn:aws:iam::887675945755:role/GitHubActionsAppRole
+
       - name: Get instance id by tag
         run:  |
           INSTANCE_ID=$(aws ec2 describe-instances \
