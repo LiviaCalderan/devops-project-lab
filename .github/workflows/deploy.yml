@@ -51,7 +51,7 @@ jobs:
         run:  |
           INSTANCE_ID=$(aws ec2 describe-instances \
             --filters "Name=tag:Name,Values=${{ vars.TF_VAR_PROJECT_NAME }}-instance-ec2" \
-            --query "Reservations[*].Instances[*].InstanceId" \
+            --query "Reservations[0].Instances[0].InstanceId" \
             --output text)
 
           echo "INSTANCE_ID=$INSTANCE_ID" >> $GITHUB_ENV
