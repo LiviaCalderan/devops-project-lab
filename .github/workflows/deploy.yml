@@ -4,16 +4,16 @@ on:
   push:
     branches:
       - main
-    pull_request:
-      branches:
-        - main
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: read
   id-token: write
 
 jobs:
-  deploy:
+  build:
     name: build_ecr
     runs-on: ubuntu-latest
     steps:
@@ -34,3 +34,30 @@ jobs:
           docker build -t ${{ vars.TF_VAR_ecr_repository_name }}:latest app
           docker tag ${{ vars.TF_VAR_ecr_repository_name }}:latest 887675945755.dkr.ecr.us-east-2.amazonaws.com/${{ vars.TF_VAR_ecr_repository_name }}:latest
           docker push 887675945755.dkr.ecr.us-east-2.amazonaws.com/${{ vars.TF_VAR_ecr_repository_name }}:latest
+
+  deploy:
+    name: deploy_ec2
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Get instance id by tag
+        run:  |
+          INSTANCE_ID=$(aws ec2 describe-instances \
+            --filters "Name=tag:Name,Values=${{ vars.PROJECT_NAME }}-instance-ec2" \
+            --query "Reservations[*].Instances[*].InstanceId" \
+            --output text)
+
+          echo "INSTANCE_ID=$INSTANCE_ID" >> $GITHUB_ENV
+
+      - name: Deploy via SSM
+        run: |
+          aws ssm send-command \
+            --instance-ids "$INSTANCE_ID" \
+            --document-name "AWS-RunShellScript" \
+            --parameters 'commands=[
+              "aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 887675945755.dkr.ecr.us-east-2.amazonaws.com",
+              "docker pull 887675945755.dkr.ecr.us-east-2.amazonaws.com/${{ vars.TF_VAR_ecr_repository_name }}:latest",
+              "docker stop ${{ vars.TF_VAR_ecr_repository_name }} || true",
+              "docker rm ${{ vars.TF_VAR_ecr_repository_name }} || true",
+              "docker run -d --name ${{ vars.TF_VAR_ecr_repository_name }} -p 80:80 --restart unless-stopped 887675945755.dkr.ecr.us-east-2.amazonaws.com/${{ vars.TF_VAR_ecr_repository_name }}:latest"
+            ]'
